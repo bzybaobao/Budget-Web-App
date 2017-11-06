@@ -75,16 +75,32 @@ var UIController = (function(){
                    };
            
         },
+        
         getDOMstrings: function() {
             return DOMstrings;
         },
+        
+        clearFields: function() {
+          var fields, fieldsArr;//LIST to array we use call method
+          fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+         fieldsArr = Array.prototype.slice.call(fields);
+        
+          fieldsArr.forEach(function(current, index, array){
+              //console.log(current.val);
+              current.value = "";
+          });
+           fieldsArr[0].focus();
+   
+        },
+        
         addListItem : function(obj, type) {
             var html, newHtml,element;
             //create the html strings.
             if (type === 'inc') {
                  element = DOMstrings.incomeContainer;
                  html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
-            } else if (typo ==='exp') {
+            } else if (type ==='exp') {
+                console.log("exp");
                   element = DOMstrings.expensesContainer;
                   html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
             }
@@ -122,6 +138,9 @@ var controller = (function(budgetCtrl, UICtrl){
         newItem = budgetCtrl.addItem(input.type, input.description, input.value);
         // 3. add the item to the UI
         UICtrl.addListItem(newItem, input.type);
+        
+        // 4. clear the fields.
+        UICtrl.clearFields();
         // 4. calculate the budget
         // 5. display the budget on the UI.
         //console.log(input);
